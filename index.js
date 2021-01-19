@@ -1,6 +1,6 @@
 // global variables - you can tweak them and play with them in any way you want.
-const numberOfCircles = 400
-const circleRadius = 5
+const numberOfCircles = 400;
+const circleRadius = 5;
 const circleColors = ['#F75C03', '#FFD50C', '#01C8EF', '#2274A5'];
 
 //----------------------------------------------------------------//
@@ -15,26 +15,23 @@ const c = canvas.getContext('2d');
 const mouse = {
   x: undefined,
   y: undefined,
-  setPosition: function(x, y){
+  setPosition: function (x, y) {
     this.x = x;
     this.y = y;
-  }
-}
+  },
+};
 
 window.addEventListener('mousemove', (e) => {
   const {x, y} = e;
-  mouse.setPosition(x, y)
-})
+  mouse.setPosition(x, y);
+});
 window.addEventListener('resize', () => {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-})
-
-
+});
 
 class Circle {
   constructor(radius, colors, x, y, dx, dy) {
-
     this.radius = radius;
     this.minRadius = radius;
     this.color = colors[Math.floor(Math.random() * colors.length)];
@@ -59,7 +56,6 @@ class Circle {
   }
 
   update() {
-    
     if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0) {
       this.dx *= -1;
     }
@@ -72,7 +68,10 @@ class Circle {
       this.radius < this.minRadius * 10
     ) {
       this.radius += 2;
-    } else if (this.radius > this.minRadius) {
+    } else if (
+      this.radius > this.minRadius &&
+      !(Math.abs(mouse.x - this.x) < 120 && Math.abs(mouse.y - this.y) < 120)
+    ) {
       this.radius -= 1;
     }
     this.x += this.dx;
@@ -86,7 +85,6 @@ const circleList = [];
 for (let i = 0; i < numberOfCircles; i++) {
   circleList.push(new Circle(circleRadius, circleColors));
 }
-
 
 function animate() {
   requestAnimationFrame(animate);
